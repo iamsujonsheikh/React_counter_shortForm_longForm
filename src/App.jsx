@@ -6,9 +6,9 @@ import Counter from './pages/Counter'
 const App = () => {
   return (
     <div>
-      <Counter />
+      {/* <Counter /> */}
       {/* <ShortForm /> */}
-      {/* <LongForm /> */}
+      <LongForm />
     </div>
   )
 }

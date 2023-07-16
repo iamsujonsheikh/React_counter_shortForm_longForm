@@ -1,17 +1,48 @@
-import React from "react";
+import React, { useReducer } from "react";
 
 const LongForm = () => {
+    const initialState = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        education: "",
+        feedback: "",
+        gender: "",
+        terms: true,
+        quantity: 0,
+    };
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case "INPUT":
+                return {
+                    ...state,
+                    [action.payload.name]: action.payload.value
+                }
+            case "TOOGLE":
+                return {
+                    ...state,
+                    term: !state.term
+                }
 
+            default:
+                return state;
+        }
+    };
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const submit = (event) => {
+        event.preventDefault()
+        console.log(state);
+    };
     return (
         <div className='h-screen w-screen flex justify-center items-center overflow-auto'>
-            <form
-                className='shadow-lg p-10 rounded-md flex flex-wrap gap-3 max-w-3xl justify-between'
+            <form onSubmit={submit}
+                className='shadow-lg border border-yellow-200 p-10 rounded-md flex flex-wrap gap-3 max-w-3xl justify-between'
             >
                 <div className='flex flex-col w-full max-w-xs'>
                     <label className='mb-2' htmlFor='firstName'>
                         First Name
                     </label>
-                    <input
+                    <input onBlur={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                         className="border rounded h-8"
                         type='text'
                         name='firstName'
@@ -23,6 +54,7 @@ const LongForm = () => {
                         Last Name
                     </label>
                     <input
+                        onBlur={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                         className="border rounded h-8"
                         type='text'
                         name='lastName'
@@ -35,6 +67,7 @@ const LongForm = () => {
                         Email
                     </label>
                     <input
+                        onBlur={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                         className="border rounded h-8"
                         type='email'
                         name='email'
@@ -47,6 +80,7 @@ const LongForm = () => {
                     <div className='flex gap-3'>
                         <div>
                             <input
+                                onClick={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                                 type='radio'
                                 id='male'
                                 name='gender'
@@ -59,6 +93,7 @@ const LongForm = () => {
                         </div>
                         <div>
                             <input
+                                onClick={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                                 type='radio'
                                 id='female'
                                 name='gender'
@@ -71,6 +106,7 @@ const LongForm = () => {
                         </div>
                         <div>
                             <input
+                                onClick={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                                 type='radio'
                                 id='other'
                                 name='gender'
@@ -88,6 +124,7 @@ const LongForm = () => {
                         Education
                     </label>
                     <select
+                        onChange={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
                         className="border rounded h-8"
                         name='education'
                         id='education'
@@ -118,6 +155,8 @@ const LongForm = () => {
                         Feedback
                     </label>
                     <textarea
+                        onBlur={(e) => dispatch({ type: "INPUT", payload: { name: e.target.name, value: e.target.value } })}
+
                         className="border rounded"
                         name='feedback'
                         id='feedback'
@@ -130,6 +169,7 @@ const LongForm = () => {
                 <div className='flex justify-between items-center w-full'>
                     <div className='flex  w-full max-w-xs'>
                         <input
+                            onClick={() => dispatch({ type: "TOGGLE" })}
                             className='mr-3'
                             type='checkbox'
                             name='term'
@@ -140,7 +180,7 @@ const LongForm = () => {
                     <button
                         className=' px-4 py-3 bg-indigo-500 rounded-md font-semibold text-white text-lg disabled:bg-gray-500'
                         type='submit'
-                    // disabled={!state.term}
+                        disabled={!state.term}
                     >
                         Submit
                     </button>
